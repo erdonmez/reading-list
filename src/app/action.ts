@@ -2,36 +2,45 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/service/repository";
-import { bookInput } from "@/validation/validator";
+import { CreateBookInput, createBookSchema } from "@/validation/validator";
 
-export async function addBook(formData: FormData) {
-  const parsed = bookInput.safeParse({
-    title: formData.get("title"),
-    author: formData.get("author"),
-  });
+export async function addBook(createBookInput: CreateBookInput) {
+  try {
+    const validatedData = createBookSchema.parse(createBookInput);
 
-  if (!parsed.success) {
-    return { ok: false, errors: parsed.error.flatten().fieldErrors };
+    const book = await prisma.book.create({
+      data: validatedData,
+    });
+
+    revalidatePath("/");
+
+    return { success: true, data: book };
+  } catch (error) {
+    if (error instanceof Error) {
+      return { success: false, error: error.message };
+    }
+    return { success: false, error: "Failed to create book" };
   }
-
-  await prisma.book.create({ data: { ...parsed.data } });
-
-  revalidatePath("/");
-
-  return { ok: true };
 }
 
 export async function readBook(id: string) {
-  const current = await prisma.book.findUnique({ where: { id } });
+  try {
+    const book = await prisma.book.findUnique({ where: { id } });
 
-  if (!current) return { ok: false, error: "Not found" };
+    if (!book) {
+      return { success: false, error: "Book not found" };
+    }
 
-  await prisma.book.update({
-    where: { id },
-    data: { isRead: !current.isRead },
-  });
+    const updatedBook = await prisma.book.update({
+      where: { id },
+      data: { isRead: true },
+    });
 
-  revalidatePath("/");
+    revalidatePath("/");
 
-  return { ok: true };
+    return { success: true, data: updatedBook };
+  } catch (error) {
+    console.error("Error marking book read status:", error);
+    return { success: false, error: "Failed to update book" };
+  }
 }
