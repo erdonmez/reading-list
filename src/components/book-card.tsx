@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Book } from "@/types/Book";
-import { readBook } from "@/app/action";
+import { toggleBookReadStatus } from "@/app/action";
 
 interface BookCardProps {
   book: Book;
@@ -11,15 +11,16 @@ interface BookCardProps {
 export default function BookCard({ book }: BookCardProps) {
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const handleRead = async () => {
+  const handleToggle = async () => {
     setIsUpdating(true);
     try {
-      const result = await readBook(book.id);
+      const result = await toggleBookReadStatus(book.id);
+
       if (!result.success) {
-        console.error("Failed to mark book:", result.error);
+        console.error("Failed to mark book read status:", result.error);
       }
     } catch (error) {
-      console.error("Error marking book:", error);
+      console.error("Error marking book status:", error);
     } finally {
       setIsUpdating(false);
     }
@@ -67,7 +68,7 @@ export default function BookCard({ book }: BookCardProps) {
 
         <div className="flex flex-col gap-2 ml-4">
           <button
-            onClick={handleRead}
+            onClick={handleToggle}
             disabled={isUpdating}
             className={`px-3 py-1 text-sm rounded-md transition-colors ${
               book.isRead
@@ -75,7 +76,7 @@ export default function BookCard({ book }: BookCardProps) {
                 : "bg-green-100 text-green-700 hover:bg-green-200"
             } disabled:opacity-50`}
           >
-            {isUpdating ? "..." : "Mark"}
+            {isUpdating ? "..." : book.isRead ? "Mark Unread" : "Mark Read"}{" "}
           </button>
         </div>
       </div>

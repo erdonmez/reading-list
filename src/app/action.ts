@@ -38,7 +38,7 @@ export async function addBook(createBookInput: CreateBookInput) {
   }
 }
 
-export async function readBook(id: string) {
+export async function toggleBookReadStatus(id: string) {
   try {
     const book = await prisma.book.findUnique({ where: { id } });
 
@@ -48,7 +48,7 @@ export async function readBook(id: string) {
 
     const updatedBook = await prisma.book.update({
       where: { id },
-      data: { isRead: true },
+      data: { isRead: !book.isRead },
     });
 
     revalidatePath("/");
