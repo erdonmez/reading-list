@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { toggleBookReadStatus } from "@/app/action";
 
 export default function ToggleButton({ id }: { id: string }) {
