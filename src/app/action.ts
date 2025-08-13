@@ -3,6 +3,21 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/service/repository";
 import { CreateBookInput, createBookSchema } from "@/validation/validator";
+import { Book } from "@/types/Book";
+
+export async function getBooks(): Promise<{
+  success: boolean;
+  data?: Book[];
+  error?: string;
+}> {
+  try {
+    const books = await prisma.book.findMany();
+    return { success: true, data: books };
+  } catch (error) {
+    console.error("Error fetching books:", error);
+    return { success: false, error: "Failed to fetch books" };
+  }
+}
 
 export async function addBook(createBookInput: CreateBookInput) {
   try {
