@@ -60,13 +60,13 @@ export default function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
+    <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 transition-opacity duration-300">
+      <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md border border-gray-100 transform transition-all duration-300 scale-100 opacity-100">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold text-gray-900">Add New Book</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
+            className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100"
           >
             <svg
               className="w-6 h-6"
@@ -97,8 +97,10 @@ export default function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
               id="title"
               value={formData.title}
               onChange={(e) => handleInputChange("title", e.target.value)}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.title ? "border-red-300" : "border-gray-300"
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                errors.title
+                  ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                  : "border-gray-300"
               }`}
               placeholder="Enter book title"
               disabled={isSubmitting}
@@ -120,8 +122,10 @@ export default function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
               id="author"
               value={formData.author}
               onChange={(e) => handleInputChange("author", e.target.value)}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.author ? "border-red-300" : "border-gray-300"
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                errors.author
+                  ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                  : "border-gray-300"
               }`}
               placeholder="Enter author name"
               disabled={isSubmitting}
@@ -136,14 +140,14 @@ export default function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors disabled:opacity-50"
+              className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200 disabled:opacity-50 font-medium"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50"
+              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 disabled:opacity-50 font-medium shadow-sm hover:shadow-md"
             >
               {isSubmitting ? "Adding..." : "Add Book"}
             </button>

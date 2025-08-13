@@ -61,7 +61,12 @@ export default function BookCard({ book }: BookCardProps) {
               {book.isRead ? "Read" : "Unread"}
             </span>
             <span className="text-xs text-gray-400">
-              Added {new Date(book.createdAt).toLocaleDateString()}
+              Added{" "}
+              {new Date(book.createdAt).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
             </span>
           </div>
         </div>
