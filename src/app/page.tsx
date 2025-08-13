@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import BookList from "@/components/book-list";
+import AddBookButton from "@/components/new-book-button";
 
 export default function HomePage() {
   return (
@@ -12,6 +13,13 @@ export default function HomePage() {
           <p className="text-lg text-gray-600">
             Track your reading progress and discover new books
           </p>
+        </div>
+
+        <div className="flex justify-between items-center mb-6">
+          <div className="text-sm text-gray-500">
+            Manage your personal library
+          </div>
+          <AddBookButton />
         </div>
 
         <Suspense
